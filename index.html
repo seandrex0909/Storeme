@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>MODZ STORE</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+/* --- 3D Animated Background --- */
+body{
+margin:0;
+font-family:Arial;
+color:white;
+text-align:center;
+background:#111;
+overflow-x:hidden;
+}
+.background3d{
+position:fixed;
+top:0;
+left:0;
+width:200%;
+height:200%;
+background:
+radial-gradient(circle,#00c85322 2px,transparent 2px),
+radial-gradient(circle,#00e5ff22 2px,transparent 2px);
+background-size:60px 60px;
+animation:bgmove 30s linear infinite;
+z-index:-1;
+}
+@keyframes bgmove{
+0%{transform:translate(0,0)}
+100%{transform:translate(-200px,-200px)}
+}
+
+/* --- 3D Text --- */
+.ThreeD{
+color:#00e5ff;
+text-shadow:
+1px 1px #00c853,
+2px 2px #00bfa5,
+3px 3px #00e5ff,
+4px 4px #00c853;
+}
+
+/* --- NAVBAR --- */
+#navBar{
+margin-top:20px;
+}
+#navBar button{
+padding:10px 20px;
+margin:5px;
+border:none;
+border-radius:8px;
+background:linear-gradient(45deg,#00c853,#00e5ff);
+color:white;
+cursor:pointer;
+transition:0.3s;
+}
+#navBar button:hover{transform:scale(1.1)}
+
+/* --- Containers --- */
+.container{
+margin-top:40px;
+background:#1e1e1e;
+padding:25px;
+border-radius:12px;
+width:90%;
+max-width:500px;
+margin-left:auto;
+margin-right:auto;
+}
+
+/* --- Input & Buttons --- */
+input{
+padding:10px;
+margin:8px;
+width:200px;
+border-radius:6px;
+border:none;
+background:#222;
+color:white;
+text-align:center;
+box-shadow:0 0 5px #00e5ff inset;
+}
+button{
+padding:10px 20px;
+border:none;
+border-radius:8px;
+background:linear-gradient(45deg,#00c853,#00e5ff);
+color:white;
+cursor:pointer;
+transition:0.3s;
+}
+button:hover{transform:scale(1.05);box-shadow:0 0 10px #00e5ff}
+
+/* --- Product Cards --- */
+.product{
+background:#1b1b1b;
+padding:20px;
+margin:15px;
+border-radius:10px;
+position:relative;
+transition: transform 0.5s;
+transform-style: preserve-3d;
+}
+.product:hover{
+transform: rotateY(15deg) rotateX(10deg) scale(1.05);
+box-shadow:0 0 20px #00e5ff;
+}
+
+/* --- Reviews --- */
+.reviewBox{
+background:#2a2a2a;
+padding:10px;
+margin-top:10px;
+border-radius:10px;
+font-size:14px;
+}
+.stars{color:gold;}
+
+/* --- Search --- */
+.search{
+padding:10px;
+width:250px;
+margin:15px;
+border-radius:6px;
+border:none;
+background:#222;
+color:white;
+box-shadow:0 0 5px #00e5ff inset;
+}
+
+/* --- Live Purchase --- */
+.livePurchase{
+position:fixed;
+bottom:10px;
+right:10px;
+background:rgba(0,0,0,0.7);
+padding:12px;
+border-radius:10px;
+font-size:14px;
+max-width:250px;
+z-index:999;
+}
+
+/* --- Status Box --- */
+#statusBox{
+margin:15px auto;
+width:180px;
+padding:10px;
+border-radius:8px;
+background:#222;
+color:white;
+text-align:center;
+}
+
+/* --- Discord Button --- */
+#discordBtn{
+margin:15px;
+padding:10px 15px;
+border:none;
+border-radius:8px;
+background:linear-gradient(45deg,#7289da,#99aab5);
+color:white;
+cursor:pointer;
+transition:0.3s;
+}
+#discordBtn:hover{transform:scale(1.05);box-shadow:0 0 10px #7289da}
+</style>
+</head>
+<body>
+<div class="background3d"></div>
+
+<!-- LOGIN -->
+<div id="loginPage" class="container">
+<h2 class="ThreeD">LOGIN</h2>
+<input id="loginUser" placeholder="Username"><br>
+<input id="loginPass" type="password" placeholder="Password"><br>
+<button onclick="login()">Login</button>
+<p class="link" onclick="showRegister()">Register</p>
+</div>
+
+<!-- REGISTER -->
+<div id="registerPage" class="container" style="display:none">
+<h2 class="ThreeD">REGISTER</h2>
+<input id="regUser" placeholder="Username"><br>
+<input id="regPass" type="password" placeholder="Password"><br>
+<button onclick="register()">Register</button>
+<p class="link" onclick="showLogin()">Back to login</p>
+</div>
+
+<!-- NAVBAR -->
+<div id="navBar" style="display:none">
+<button onclick="showPage('homePage')">Home</button>
+<button onclick="showPage('shopPage')">Store</button>
+<button onclick="showPage('cartPage')">Cart</button>
+<button onclick="showPage('aboutPage')">About</button>
+<button onclick="logout()">Logout</button>
+</div>
+
+<!-- HOME -->
+<div id="homePage" class="container" style="display:none">
+<h1 class="ThreeD">MODZ STORE</h1>
+<p>Best game mods and tools. Join <span id="purchasedUsers">1834</span>+ users!</p>
+<p>Average Rating: <span id="avgRating">4.8/5</span></p>
+<div id="statusBox">Status: <span id="onlineStatus">Loading...</span></div>
+<button id="discordBtn" onclick="joinDiscord()">Join Discord</button>
+</div>
+
+<!-- STORE -->
+<div id="shopPage" style="display:none">
+<h1 class="ThreeD">STORE</h1>
+<input class="search" id="searchInput" onkeyup="searchProduct()" placeholder="Search">
+<p><input id="nicknameInput" maxlength="5" placeholder="NICKNAME"></p>
+
+<!-- PRODUCT 1 -->
+<div class="product">
+<h3 class="ThreeD productName">BLOOD STRIKE</h3>
+<p>Price: $47 | Stock: <span id="stock1">12</span></p>
+<button onclick="addCart('BLOOD STRIKE 30-Days',47)">Add to Cart</button>
+<div class="reviewBox">
+<div id="stars1" class="stars"></div>
+<p id="comment1"></p>
+</div>
+</div>
+
+<!-- PRODUCT 2 -->
+<div class="product">
+<h3 class="ThreeD productName">COLORBOT LIFETIME</h3>
+<p>Price: $200 | Stock: <span id="stock2">20</span></p>
+<button onclick="addCart('COLORBOT LIFETIME',200)">Add to Cart</button>
+<div class="reviewBox">
+<div id="stars2" class="stars"></div>
+<p id="comment2"></p>
+</div>
+</div>
+
+<!-- PRODUCT 3 -->
+<div class="product">
+<h3 class="ThreeD productName">VALORANT PREMIUM</h3>
+<p>Price: $61 | Stock: <span id="stock3">8</span></p>
+<button onclick="addCart('VALORANT 30-Days',61)">Add to Cart</button>
+<div class="reviewBox">
+<div id="stars3" class="stars"></div>
+<p id="comment3"></p>
+</div>
+</div>
+</div>
+  
+<div class="product">
+<h3 class="ThreeD productName">RUST PREMIUM</h3>
+<p>Price: $56 | Stock: <span id="stock3">11</span></p>
+<button onclick="addCart('RUST 30-Days',56)">Add to Cart</button>
+<div class="reviewBox">
+<div id="stars3" class="stars"></div>
+<p id="comment3"></p>
+</div>
+</div>
+</div>
+
+<div class="product">
+<h3 class="ThreeD productName">CS.GO PREMIUM</h3>
+<p>Price: $42 | Stock: <span id="stock3">16</span></p>
+<button onclick="addCart('CS.GO 30-Days',42)">Add to Cart</button>
+<div class="reviewBox">
+<div id="stars3" class="stars"></div>
+<p id="comment3"></p>
+</div>
+</div>
+</div>
+
+<div class="product">
+<h3 class="ThreeD productName">ONCE HUMAN PC PREMIUM</h3>
+<p>Price: $78 | Stock: <span id="stock3">2</span></p>
+<button onclick="addCart('ONCE HUMAN 30-Days',78)">Add to Cart</button>
+<div class="reviewBox">
+<div id="stars3" class="stars"></div>
+<p id="comment3"></p>
+</div>
+</div>
+</div>
+
+<div class="product">
+<h3 class="ThreeD productName">KNIVES OUT PC PREMIUM</h3>
+<p>Price: $26 | Stock: <span id="stock3">6</span></p>
+<button onclick="addCart('KNIVES OUT 30-Days',78)">Add to Cart</button>
+<div class="reviewBox">
+<div id="stars3" class="stars"></div>
+<p id="comment3"></p>
+</div>
+</div>
+</div>
+
+<!-- CART -->
+<div id="cartPage" class="container" style="display:none">
+<h2 class="ThreeD">YOUR CART</h2>
+<ul id="cartList"></ul>
+<input id="emailInput" placeholder="Email"><br>
+<button id="checkoutButton">Checkout</button>
+<div id="paypal-container"></div>
+</div>
+
+<!-- ABOUT -->
+<div id="aboutPage" class="container" style="display:none">
+<h2 class="ThreeD">ABOUT</h2>
+<p>Yo! This is my private spot — just for real friends. No random lurkers allowed. Here, I drop mods, hacks, and insider tips. Keep it chill, respect the circle, and enjoy the perks. Only the trusted get access. 🔒</p>
+</div>
+
+<!-- LIVE PURCHASE -->
+<div id="livePurchase" class="livePurchase"></div>
+
+<!-- PAYPAL SDK -->
+<script src="https://www.paypal.com/sdk/js?client-id=Adi3lxGf3uOjfkEk6doMnXmuxkSZRk5kw8mj9fxEQ5YfaGJ4wnr0aOlo8H2SBRFmLO5RfWIIwi6XOcBH&currency=USD"></script>
+
+<script>
+// Variables
+let cart=[]
+let total=0
+let purchasedUsers=1500
+let stock=[12,20,8]
+let nickname=""
+let discordAvailable=true  // toggle availability for demo
+
+// Review data
+const names=["AlexHakx","RyanRentaru","MikeKal72","JasonRoxks","Chris37","GhostXx","EliteUseXxr","Kio728","Melonzzei","Yuahnha3","TryMeja34"]
+const comments=["Working perfectly","Best mod ever","Safe and legit","Highly recommended","Amazing tool","Very good","Nice bro legit na legit","May problema sir. bakit ayaw mag loadng hacks","strongaim hhahhaha","Nice cheat undetected"]
+
+// Login/Register
+function login(){
+let u=document.getElementById("loginUser").value
+let p=document.getElementById("loginPass").value
+if(u==localStorage.username && p==localStorage.password){
+loginPage.style.display="none"
+navBar.style.display="block"
+showPage("homePage")
+}else{alert("Wrong login")}
+}
+function logout(){navBar.style.display="none";loginPage.style.display="block"}
+function register(){localStorage.username=regUser.value;localStorage.password=regPass.value;alert("Registered");showLogin()}
+function showLogin(){registerPage.style.display="none";loginPage.style.display="block"}
+function showRegister(){loginPage.style.display="none";registerPage.style.display="block"}
+
+// Page switch
+function showPage(id){
+["homePage","shopPage","cartPage","aboutPage"].forEach(p=>{
+document.getElementById(p).style.display=(p==id)?"block":"none"
+})
+}
+
+// Cart
+function addCart(name,price){
+nickname=document.getElementById("nicknameInput").value
+if(nickname.length<1){alert("Enter your nickname!"); return;}
+cart.push({name,price})
+total+=price
+let li=document.createElement("li")
+li.innerText=`${name} - $${price} | Buyer: ${nickname}`
+document.getElementById("cartList").appendChild(li)
+updateStock(name)
+purchasedUsers++
+document.getElementById("purchasedUsers").innerText=purchasedUsers
+}
+
+// Search
+function searchProduct(){
+let input=document.getElementById("searchInput").value.toLowerCase()
+let products=document.getElementsByClassName("product")
+for(let i=0;i<products.length;i++){
+let name=products[i].getElementsByClassName("productName")[0].innerText.toLowerCase()
+products[i].style.display=name.includes(input)?"block":"none"
+}
+}
+
+// Reviews
+function randomStars(){let n=Math.floor(Math.random()*2)+4;let s="";for(let i=0;i<n;i++) s+="⭐";return s}
+function randomReview(){let name=names[Math.floor(Math.random()*names.length)];let comment=comments[Math.floor(Math.random()*comments.length)];return name+": "+comment}
+function loadReviews(){
+for(let i=1;i<=3;i++){
+document.getElementById("stars"+i).innerHTML=randomStars()
+document.getElementById("comment"+i).innerHTML=randomReview()
+}}
+window.onload=loadReviews
+
+// PayPal checkout
+document.getElementById("checkoutButton").addEventListener("click",function(){
+if(cart.length==0){alert("Cart empty!");return;}
+let email=document.getElementById("emailInput").value
+if(!email){alert("Enter email!");return;}
+paypal.Buttons({
+createOrder:function(data,actions){return actions.order.create({purchase_units:[{ amount:{ value: total.toFixed(2)}}]});},
+onApprove:function(data,actions){
+return actions.order.capture().then(function(details){
+alert("Payment Successful, "+details.payer.name.given_name)
+cart=[];total=0
+document.getElementById("cartList").innerHTML=""
+})
+}
+}).render("#paypal-container")
+})
+
+// Fake live purchase
+const liveElem=document.getElementById("livePurchase")
+function fakePurchase(){
+let productNames=["BLOOD STRIKE","COLORBOT LIFETIME","VALORANT PREMIUM","RUST","CS.GO","KNIVES OUT"]
+let name=names[Math.floor(Math.random()*names.length)]
+let product=productNames[Math.floor(Math.random()*productNames.length)]
+liveElem.innerText=`${name} just purchased ${product}!`
+setTimeout(()=>{liveElem.innerText="";},4000)
+}
+setInterval(fakePurchase,8000)
+
+// Stock update
+function updateStock(name){
+if(name=="BLOOD STRIKE"){stock[0]--;document.getElementById("stock1").innerText=stock[0]}
+else if(name=="COLORBOT LIFETIME"){stock[1]--;document.getElementById("stock2").innerText=stock[1]}
+else if(name=="VALORANT PREMIUM"){stock[2]--;document.getElementById("stock3").innerText=stock[2]}
+}
+
+// Online status
+const statusElem = document.getElementById("onlineStatus")
+const statuses = [
+  {text:"Online", color:"green"},
+  {text:"Undetected", color:"yellow"},
+  {text:"Under Maintenance", color:"gray"}
+]
+function updateStatus(){
+  let s = statuses[Math.floor(Math.random()*statuses.length)]
+  statusElem.innerText = s.text
+  statusElem.style.color = s.color
+}
+updateStatus()
+setInterval(updateStatus, 5000 + Math.random()*5000)
+
+// Discord join
+function joinDiscord(){
+if(discordAvailable){
+alert("Redirecting to Discord group...")
+window.open("https://discord.gg/example","_blank")
+}else{
+alert("Discord group currently unavailable.")
+}
+}
+</script>
+</body>
+</html>
